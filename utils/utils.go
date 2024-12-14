@@ -22,6 +22,20 @@ func ParseInt(str string) int {
 	return num
 }
 
+func ParseFloat(str string) float64 {
+	num, err := strconv.ParseFloat(str, 64)
+	if err != nil {
+		panic(err)
+	}
+	return num
+}
+
 func IntAbs(num int) int {
 	return int(math.Abs(float64(num)))
+}
+
+func IsInt(num float64) bool {
+	epsilon := 1e-6
+	_, frac := math.Modf(math.Abs(num))
+	return frac < epsilon || frac > 1.0-epsilon
 }
