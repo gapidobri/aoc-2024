@@ -65,7 +65,7 @@ func run(part2 bool) {
 		}
 
 		slices.Reverse(nums)
-		stack := utils.NewStack(nums)
+		stack := utils.NewStack(nums...)
 
 		if calculate(stack.Clone(), add, target, part2) || calculate(stack.Clone(), mul, target, part2) || (part2 && calculate(stack.Clone(), cat, target, part2)) {
 			sum += target

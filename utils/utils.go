@@ -39,3 +39,7 @@ func IsInt(num float64) bool {
 	_, frac := math.Modf(math.Abs(num))
 	return frac < epsilon || frac > 1.0-epsilon
 }
+
+func IntPow(x, y int) int {
+	return int(math.Pow(float64(x), float64(y)))
+}

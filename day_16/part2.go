@@ -42,7 +42,8 @@ func part2() {
 func (p2 *Part2) run(start pos) {
 	p2.moves = append(p2.moves, move{start, p2.heuristic(start), nil})
 
-	var bestScore int
+	var bestCost int
+	bestTiles := mapset.NewSet[pos]()
 
 	for len(p2.moves) > 0 {
 		nextMove := p2.moves[0]
@@ -55,8 +56,20 @@ func (p2 *Part2) run(start pos) {
 		}
 
 		if p2.goalCheck(nextMove.pos) {
-			bestScore = nextMove.pos.cost
-			break
+			fmt.Println(nextMove.pos.cost)
+			if bestCost == 0 {
+				bestCost = nextMove.pos.cost
+			}
+			if nextMove.pos.cost < bestCost {
+				break
+			}
+			m := nextMove
+			for {
+				bestTiles.Add(m.pos)
+				if m.prev != nil {
+					m = *m.prev
+				}
+			}
 		}
 
 		p2.moves = append(p2.moves[:nextI], p2.moves[nextI+1:]...)
@@ -77,46 +90,6 @@ func (p2 *Part2) run(start pos) {
 		}
 
 		p2.moves = append(p2.moves, generated...)
-	}
-
-	fmt.Println(bestScore)
-
-	bestTiles := mapset.NewSet[pos]()
-	p2.moves = append(p2.moves, move{start, p2.heuristic(start), nil})
-
-	for len(p2.moves) > 0 {
-		nextMove := p2.moves[0]
-		nextI := 0
-		for i, m := range p2.moves {
-			if m.f < nextMove.f {
-				nextMove = m
-				nextI = i
-			}
-		}
-
-		if p2.goalCheck(nextMove.pos) {
-			m := nextMove
-			for {
-				bestTiles.Add(m.pos.pos())
-				if m.prev == nil {
-					break
-				}
-				m = *m.prev
-			}
-		}
-
-		p2.moves = append(p2.moves[:nextI], p2.moves[nextI+1:]...)
-
-		generated := p2.generateMoves(&nextMove)
-
-		for _, m := range generated {
-			fmt.Println(m.pos.cost)
-			if m.pos.cost <= bestScore {
-				p2.moves = append(p2.moves, m)
-			} else {
-				fmt.Println("e")
-			}
-		}
 	}
 
 	fmt.Println(bestTiles.Cardinality())

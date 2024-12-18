@@ -1,10 +1,12 @@
 package utils
 
+import "fmt"
+
 type Stack[T any] struct {
 	items []T
 }
 
-func NewStack[T any](items []T) *Stack[T] {
+func NewStack[T any](items ...T) *Stack[T] {
 	return &Stack[T]{
 		items: items,
 	}
@@ -40,4 +42,8 @@ func (s *Stack[T]) Clone() *Stack[T] {
 	return &Stack[T]{
 		items: items,
 	}
+}
+
+func (s *Stack[T]) String() string {
+	return fmt.Sprint(s.items)
 }
