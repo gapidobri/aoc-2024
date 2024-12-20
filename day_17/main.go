@@ -79,7 +79,7 @@ var (
 )
 
 func part2() {
-	data := utils.ReadFile("day_17/test_input.txt")
+	data := utils.ReadFile("day_17/input.txt")
 
 	matches := regexp.
 		MustCompile("[0-9,]+").
